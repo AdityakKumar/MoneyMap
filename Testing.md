@@ -1,6 +1,6 @@
 # MERN Expense Tracker - Test Cases and Results
 
-Date: 2026-04-26
+Date: 2026-04-27
 Scope: Backend API routes and core frontend form validation currently implemented in the codebase.
 Execution Type: Static validation from implementation review (no automated test runner found in project).
 
@@ -69,13 +69,22 @@ Execution Type: Static validation from implementation review (no automated test 
 
 ## Key Defects Identified
 
-1. Resolved: Ownership checks added for:
+1. Resolved (2026-04-26): Ownership checks added for:
 	 - `DELETE /api/v1/income/:id`
 	 - `DELETE /api/v1/expense/:id`
 
-2. Resolved: Non-positive amount validation added in frontend and backend create flows.
+2. Resolved (2026-04-26): Non-positive amount validation added in frontend and backend create flows.
+
+3. Resolved (2026-04-27): `useUserAuth` hook was calling `clearUser()` + `navigate("/login")` on **any** error (network timeout, server restart, etc.), not just on a `401 Unauthorized`. Fixed to only logout on confirmed `401` response.
+
+4. Resolved (2026-04-27): Expired/invalid token was not cleared from `localStorage` before redirecting to `/login` in `axiosInstance.js`. Fixed by calling `localStorage.removeItem("token")` before redirect.
+
+5. Resolved (2026-04-27): `nodemon` was watching the `uploads/` folder, causing server restarts on every image upload. Fixed by adding `backend/nodemon.json` to restrict watching to source code files only.
+
+6. Resolved (2026-04-27): JWT token expiry extended from `1h` to `7d` to prevent frequent session timeouts.
 
 ## Notes
 
 - These results are based on the current code behavior in controllers, middleware, and frontend forms.
 - For runtime verification, convert these cases into automated API tests (Jest + Supertest) and UI tests (React Testing Library/Cypress).
+
