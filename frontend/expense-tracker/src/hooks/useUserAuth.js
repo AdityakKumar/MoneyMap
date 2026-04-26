@@ -22,7 +22,7 @@ export const useUserAuth = () => {
         }
       } catch (error) {
         console.error("Failed to fetch user info:", error);
-        if (isMounted) {
+        if (isMounted && error.response?.status === 401) {
           clearUser();
           navigate("/login");
         }
